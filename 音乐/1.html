@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <script src="./jquery.slim.min.js"></script>
+    <script src="./bootstrap.bundle.min.js"></script>
+    <title>Document</title>
+    <style>
+        th {
+            color: white;
+        }
+
+        td {
+            color: white;
+        }
+
+        button {
+            font-size: 14px;
+            color: gray;
+            border-radius: 50%;
+            border: 1px solid white;
+            background-color: skyblue;
+            margin-left: 10px;
+        }
+
+        #green {
+            background-color: rgb(135, 185, 173);
+            border-radius: 50%;
+            border: none;
+            width: 100px;
+            height: 75px;
+            font-size: 20px;
+            color: white;
+            margin-left: 1600px;
+            margin-top: -300px;
+        }
+
+        table {
+            margin: 30px auto;
+            width: 1100px;
+        }
+
+        h1 {
+            text-align: center;
+            color: rgb(151, 210, 224);
+            font-size: 100px;
+        }
+
+        #hallo {
+            margin-left: 1240px;
+        }
+
+        .navsong {
+            margin-top: -40px;
+            margin-left: 1340px;
+        }
+    </style>
+</head>
+
+<h1>歌曲列表</h1>
+<!-- Button trigger modal -->
+<table border="1px" style="border-spacing: 0px" bgcolor="skyblue" bordercolor="lightblue">
+    <thead>
+        <tr align="center">
+            <th>ID</th>
+            <th>歌曲名称</th>
+            <th>作曲家</th>
+            <th>专辑名称</th>
+            <th>年代</th>
+            <th>类型</th>
+            <th>长度</th>
+            <th>创建时间</th>
+            <th>更新时间</th>
+            <th>图片地址</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<button type="button" class="btn btn-primary btn-lg modal-body" data-toggle="modal" data-target="#staticBackdrop"
+    id="green">添加</button>
+
+<nav aria-label="Page navigation example" class="navsong">
+    <ul class="pagination">
+    </ul>
+</nav>
+
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">添加</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="songname">添加歌曲</label>
+                        <input type="text" class="form-control" id="songname">
+                    </div>
+                    <div class="form-group">
+                        <label for="artistname">作曲家</label>
+                        <input type="text" class="form-control" id="artistname">
+                    </div>
+                    <div class="form-group">
+                        <label for="albumname">专辑</label>
+                        <input type="text" class="form-control" id="albumname">
+                    </div>
+                    <div class="form-group">
+                        <label for="yeartime">年代</label>
+                        <input type="text" class="form-control" id="yeartime">
+                    </div>
+                    <div class="form-group">
+                        <label for="kindsof">分类</label>
+                        <input type="text" class="form-control" id="kindsof">
+                    </div>
+                    <div class="form-group">
+                        <label for="photo">图片地址</label>
+                        <input type="text" class="form-control" id="photo">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="perserve">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edit-button" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">修改歌曲--<b></b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="songname-edit">修改歌曲</label>
+                        <input type="text" class="form-control" id="songname-edit">
+                    </div>
+                    <div class="form-group">
+                        <label for="artistname-edit">作曲家</label>
+                        <input type="text" class="form-control" id="artistname-edit">
+                    </div>
+                    <div class="form-group">
+                        <label for="albumname-edit">专辑</label>
+                        <input type="text" class="form-control" id="albumname-edit">
+                    </div>
+                    <div class="form-group">
+                        <label for="yeartime-edit">年代</label>
+                        <input type="text" class="form-control" id="yeartime-edit">
+                    </div>
+                    <div class="form-group">
+                        <label for="kindsof-edit">分类</label>
+                        <input type="text" class="form-control" id="kindsof-edit">
+                    </div>
+                    <div class="form-group">
+                        <label for="photo-edit">图片地址</label>
+                        <input type="text" class="form-control" id="photo-edit">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="perserve-edit">确认修改</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let allA = document.querySelector(".pagination")
+        let tbodyEle = document.querySelector("tbody")
+        let page = 1
+        let pageSize = 5
+        let perserveBtn = document.getElementById("perserve")
+        let URL = 'http://mp3.zzgoodqc.cn/api'
+        let xiugai = document.getElementById("perserve-edit")
+        window.addEventListener("load", init)
+        function init() {
+            getlocalDate()
+            getSongs()
+            perserveBtn.addEventListener("click", addSongs)
+            tbodyEle.addEventListener("click", tbodyDel)
+            allA.addEventListener("click", fenye)
+            xiugai.addEventListener("click", xiugaifun)
+        }
+        function xiugaifun() {
+            let xhr = new XMLHttpRequest()
+            let id = document.querySelector("b").innerHTML
+            xhr.open("put", "https://mp3.zzgoodqc.cn/api/songs/" + id)
+            let songname = document.getElementById("songname-edit").value
+            let artistname = document.getElementById("artistname-edit").value
+            let albumname = document.getElementById("albumname-edit").value
+            let yeartime = document.getElementById("yeartime-edit").value
+            let kindsof = document.getElementById("kindsof-edit").value
+            let photo = document.getElementById("photo-edit").value
+            console.log(id);
+            // if (!songname || !artistname || !albumname || !yeartime || !kindsof || !photo) {
+            //     alert("请将信息填写完整")
+            //     return
+            // }
+            let data = {
+                title: songname,
+                artist: artistname,
+                album: albumname,
+                year: yeartime,
+                genre: kindsof,
+                image_url: photo,
+            }
+            xhr.setRequestHeader("content-Type", "application/json")
+            xhr.send(JSON.stringify(data))
+            xhr.onload = function () {
+                getSongs()
+                $('#edit-button').modal('hide')
+            }
+            // ajax({
+            //     url: '/songs' + id,
+            //     method: 'PUT',
+            //     data: data,
+            //     success: function (res) {
+            //         alert("添加成功")
+            //         getSongs()
+            //         $('#staticBackdrop').modal('hide')
+            //     }
+            // })
+        }
+        function getlocalDate() {
+            let localsongs = localStorage.getItem('songs')
+            if (localsongs) {
+                let songs = JSON.parse(localsongs)
+                render(songs.data)
+                renderPage(songs.count)
+            }
+        }
+        function fenye() {
+            if (event.target.tagName == 'A') {
+                console.log(event.target.innerHTML);
+                switch (event.target.innerHTML) {
+                    case '上一页':
+                        page--
+                        break;
+                    case '下一页':
+                        page++
+                        break;
+                }
+                getSongs()
+            }
+        }
+        function tbodyDel() {
+            if (event.target.tagName == 'BUTTON') {
+                if (event.target.innerHTML == '删除') {
+                    let id = event.target.dataset.id
+                    deleteSong(id)
+                }
+            }
+            if (event.target.tagName == 'BUTTON') {
+                if (event.target.innerHTML == '编辑') {
+                    let id = event.target.dataset.id
+                    document.querySelector("b").innerHTML = id
+                    let xhr = new XMLHttpRequest()
+                    xhr.open("get", "https://mp3.zzgoodqc.cn/api/songs/" + id)
+                    xhr.send()
+                    xhr.onload = function () {
+                        let res = JSON.parse(xhr.responseText)
+                        document.getElementById("songname-edit").value = res.data[0].title
+                        document.getElementById("artistname-edit").value = res.data[0].artist
+                        document.getElementById("albumname-edit").value = res.data[0].album
+                        document.getElementById("yeartime-edit").value = res.data[0].year
+                        document.getElementById("kindsof-edit").value = res.data[0].genre
+                        document.getElementById("photo-edit").value = res.data[0].photo
+                    }
+                }
+            }
+        }
+
+
+        function deleteSong(id) {
+            ajax({
+                url: "/songs?id=" + id,
+                method: 'DELETE',
+                success: function (res) {
+                    console.log(res);
+                    if (res.code == 200) {
+                        alert("删除成功")
+                        getSongs()
+                    }
+                }
+            })
+        }
+        function addSongs() {
+            let songname = document.getElementById("songname").value
+            let artistname = document.getElementById("artistname").value
+            let albumname = document.getElementById("albumname").value
+            let yeartime = document.getElementById("yeartime").value
+            let kindsof = document.getElementById("kindsof").value
+            let photo = document.getElementById("photo").value
+            if (!songname || !artistname || !albumname || !yeartime || !kindsof || !photo) {
+                alert("请将信息填写完整")
+                return
+            }
+            let data = {
+                title: songname,
+                artist: artistname,
+                album: albumname,
+                year: yeartime,
+                genre: kindsof,
+                image_url: photo,
+            }
+            ajax({
+                url: '/songs',
+                method: 'POST',
+                data: data,
+                success: function (res) {
+                    alert("添加成功")
+                    getSongs()
+                    $('#staticBackdrop').modal('hide')
+                }
+            })
+        }
+        function getSongs() {
+            ajax({
+                url: `/songs?page=${page}&pageSize=${pageSize}`,
+                success: function (res) {
+                    console.log(res);
+                    if (res.code == 200) {
+                        render(res.data)
+                        renderPage(res.count)
+                        localStorage.setItem("songs", JSON.stringify(res))
+                    }
+                }
+            })
+        }
+        function renderPage(count) {
+            html = `<li class="page-item"><a class="page-link" href="javascript:void(0)">上一页</a></li>`
+            html += `<li class="page-item"><a class="page-link" href="javascript:void(0)">下一页</a></li>`
+            allA.innerHTML = html
+        }
+
+        function render(data) {
+            let html = ""
+            data.forEach((item, index) => {
+                html += `
+                <tr>
+                <td scope="row">${item.id}</td>
+                <td>${item.title}</td>
+                <td>${item.artist}</td>
+                <td>${item.album}</td>
+                <td>${item.year}</td>
+                <td>${item.genre}</td>
+                <td>${item.length}</td>
+                <td>${timenow(item.created_at)}</td>
+                <td>${timenow(item.updated_at)}</td>
+                <td>${item.image_url}</td>
+                <td>
+                    <button data-id="${item.id}" data-toggle="modal" data-target="#edit-button">编辑</button>
+                    <button data-id="${item.id}">删除</button>
+                </td>
+            </tr>`
+            })
+            document.querySelector("tbody").innerHTML = html
+        }
+        function ajax({ url, method = 'GET', data = null, success }) {
+            let xhr = new XMLHttpRequest()
+            xhr.open(method, URL + url, true)
+            xhr.setRequestHeader('Content-Type', 'application/json')
+            xhr.responseType = "json"
+            if (method == 'POST' || method == 'PUT') {
+                xhr.send(JSON.stringify(data))
+            } else {
+                xhr.send()
+            }
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    success(xhr.response);
+                } else {
+                    console.log("请求失败");
+                }
+            }
+        }
+        function timenow(time) {
+            let date = new Date(time)
+            let year = date.getFullYear()
+            let month = date.getMonth() + 1
+            let day = date.getDate()
+            let hour = date.getHours()
+            let minute = date.getMinutes()
+            let second = date.getSeconds()
+            return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+        }
+    </script>
+    </body>
+
+</html>
