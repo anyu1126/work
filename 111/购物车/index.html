@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <script src="./jquery.slim.min.js"></script>
+    <script src="./bootstrap.bundle.min.js"></script>
+    <title>Document</title>
+    <style>
+        table {
+            margin-top: 20px;
+        }
+
+        h1,
+        h3 {
+            text-align: center;
+        }
+
+        #really,
+        #car {
+            width: 700px;
+            margin: 30px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>真划算</h1>
+    <table class="table" id="really">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Index</th>
+                <th scope="col">商品</th>
+                <th scope="col">单价</th>
+                <th scope="col">库存</th>
+                <th scope="col">操作</th>
+            </tr>
+        </thead>
+        <tbody id="goods-tbody"></tbody>
+    </table>
+    <h1>购物车</h1>
+    <table class="table" id="car">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Index</th>
+                <th scope="col">商品</th>
+                <th scope="col">单价</th>
+                <th scope="col">数量</th>
+                <th scope="col">金额</th>
+                <th scope="col">删除</th>
+            </tr>
+        </thead>
+        <tbody id="car-tbody"></tbody>
+    </table>
+    <h3>总价：<b>0</b>元</h3>
+</body>
+<script>
+    let goodsList = [{
+        id: 100,
+        goodsname: "苹果",
+        price: 10,
+        stock: 100,
+    }, {
+        id: 101,
+        goodsname: "香蕉",
+        price: 15,
+        stock: 99,
+    }, {
+        id: 102,
+        goodsname: "哈密瓜",
+        price: 20,
+        stock: 99,
+    }]
+    let shopCarList = [
+        {
+            id: 101,
+            goodsname: "香蕉",
+            price: 15,
+            num: 2,
+        }, {
+            id: 102,
+            goodsname: "哈密瓜",
+            price: 20,
+            num: 3,
+        }
+    ]
+    window.onload = init
+    const GoodTbodayEle = document.querySelector("#goods-tbody")
+    const shopCarTbodyEle = document.querySelector("#car-tbody")
+    const Bele = document.querySelector("b")
+    function init() {
+        renderGoodsTable()
+        renderShopCarTable()
+        money()
+        GoodTbodayEle.addEventListener("click", goodTbodayFun)
+        shopCarTbodyEle.addEventListener("click", shopCarTbodyFun)
+    }
+    function shopCarTbodyFun() {
+        if (event.target.tagName == "BUTTON" && event.target.innerHTML == "+") {
+            increaseFun(event.target.dataset.index)
+        }
+        if (event.target.tagName == "BUTTON" && event.target.innerHTML == "-") {
+            decreaseFun(event.target.dataset.index)
+        }
+        if (event.target.tagName == "BUTTON" && event.target.innerHTML == "删除") {
+            deleteFun(event.target.dataset.index)
+        }
+    }
+    function money() {
+        let result = shopCarList.reduce((sum, item) => {
+            return sum + item.price * item.num
+        }, 0)
+        Bele.innerHTML = result
+    }
+    function deleteFun(index) {
+        let num = shopCarList[index].num
+        let id = shopCarList[index].id
+        let goodsIndex = goodsList.findIndex((item) => {
+            return item.id == id
+        })
+        // shopCarList[goodsIndex].stock += num
+        shopCarList.splice(index, 1)
+        renderGoodsTable()
+        renderShopCarTable()
+    }
+    function decreaseFun(index) {
+        if (shopCarList[index].num < 2) {
+            alert("买一个")
+            return
+        }
+        shopCarList[index].num--
+        let id = shopCarList[index].id
+        let goodsIndex = goodsList.findIndex((item) => {
+            return item.id == id
+        })
+        goodsList[goodsIndex].stock++
+        renderGoodsTable()
+        renderShopCarTable()
+    }
+    function increaseFun(index) {
+        let id = shopCarList[index].id
+        let goodsIndex = goodsList.findIndex((item) => {
+            return item.id == id
+        })
+        if (goodsIndex == -1) {
+            alert("下架了")
+            return
+        } else if (goodsList[goodsIndex].stock < 1) {
+            alert("库存不足")
+            return
+        } else {
+            goodsList[goodsIndex].stock--
+            shopCarList[index].num++
+            renderGoodsTable()
+            renderShopCarTable()
+        }
+    }
+    function goodTbodayFun() {
+        if (event.target.tagName == "BUTTON" && event.target.innerHTML == "加入购物车") {
+            console.log(event.target.dataset.index);
+            addShopCar(event.target.dataset.index)
+        }
+    }
+    function addShopCar(index) {
+        if (goodsList[index].stock < 1) {
+            alert("库存不足")
+            return
+        }
+        goodsList[index].stock--
+        // goodsList[index].id == 101
+        let shopCarIndex = shopCarList.findIndex((item) => {
+            return item.id == goodsList[index].id
+        })
+        if (shopCarIndex == -1) {
+            let data = {
+                id: goodsList[index].id,
+                goodsname: goodsList[index].goodsname,
+                price: goodsList[index].price,
+                num: 1,
+            }
+            shopCarList.push(data)
+        } else {
+            shopCarList[shopCarIndex].num++
+        }
+        renderGoodsTable()
+        renderShopCarTable()
+    }
+    function renderGoodsTable() {
+        let html = ``
+        goodsList.forEach((item, index) => {
+            html += `
+                    <tr>
+                        <td>${index}</td>
+                        <td>${item.goodsname}</td>
+                        <td>${item.price}</td>
+                        <td>${item.stock}</td>
+                        <td><button data-index=${index}>加入购物车</button></td>
+                    </tr>`
+        })
+        GoodTbodayEle.innerHTML = html
+    }
+    function renderShopCarTable() {
+        let html = ``
+        shopCarList.forEach((item, index) => {
+            html += `
+                    <tr>
+                        <td>${index}</td>
+                        <td>${item.goodsname}</td>
+                        <td>${item.price}</td>
+                        <td><button data-index="${index}">+</button>${item.num}
+                            <button data-index="${index}">-</button></td>
+                        <td>${item.price * item.num}</td>
+                        <td><button data-index=${index}>删除</button></td>
+                    </tr>`
+        })
+        shopCarTbodyEle.innerHTML = html
+        money()
+    }
+</script>
+
+</html>

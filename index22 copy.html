@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            font-size: 70px;
+            text-align: center;
+            color: rgb(96, 141, 134);
+        }
+
+        table {
+            width: 100%;
+            color: white;
+        }
+
+        button {
+            margin-left: 20px;
+            border: none;
+            border-radius: 50%;
+            height: 30px;
+            margin-top: 5PX;
+        }
+
+        button:hover {
+            color: lightgreen;
+            background-color: black;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        .home {
+            margin-left: 1000px;
+            position: absolute;
+            top: 100px;
+            background-color: rgb(96, 141, 134);
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>茶叶</h1>
+    <button class="home">++</button>
+
+    <div id="add">
+        茶叶名称：<input type="text" id="tea-name">
+        茶叶类型：<input type="text" id="tea-type">
+        茶叶价格：<input type="text" id="tea-price">
+        茶叶库存：<input type="text" id="tea-stock">
+        茶叶描述：<input type="text" id="tea-description">
+        <button id="add-btn">添加</button>
+    </div>
+    <table border="1px" style="border-spacing: 0px" bgcolor="yellowgreen" bordercolor="green">
+        <thead>
+            <tr align="center">
+                <th>ID</th>
+                <th>茶叶名称</th>
+                <th>茶叶类型</th>
+                <th>茶叶价格</th>
+                <th>茶叶库存</th>
+                <th>茶叶描述</th>
+                <th>创建时间</th>
+                <th>更新时间</th>
+                <th style="width: 150px;">操作</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</body>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script>
+    let tbodyEle = document.querySelector("tbody")
+    $(function () {
+        render()
+        $("tbody").click(tbFun)
+        $("#add-btn").click(addFun)
+
+    })
+    function addFun() {
+        let obj = {
+            name: $("#tea-name").val(),
+            type: $("#tea-type").val(),
+            price: $("#tea-price").val(),
+            stock: $("#tea-stock").val(),
+            description: $("#tea-description").val(),
+        }
+        $.ajax({
+            url: "https://liu.zzgoodqc.cn/teas/",
+            type: "post",
+            data: obj,
+            dataType: "json",
+            success: function (data) {
+                render()
+            }
+        })
+    }
+    function tbFun() {
+        let id = event.target.dataset.id;
+        if (event.target.tagName === "BUTTON" && event.target.innerText === "删除") {
+            console.log(11);
+            let deli = $(event.target).data("id")
+            $.ajax({
+                url: "https://liu.zzgoodqc.cn/teas/" + deli,
+                type: "delete",
+                dataType: "json",
+                contentType: "application/json",
+                success: function (data) {
+                    render()
+                }
+            })
+        }
+    }
+    function render() {
+        let xhr = new XMLHttpRequest()
+        let html = ""
+        xhr.open("GET", "https://liu.zzgoodqc.cn/teas")
+        xhr.send()
+        xhr.onload = function () {
+            let list = JSON.parse(xhr.responseText);
+            list.data.forEach((item) => {
+                html += `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.type}</td>
+                    <td>${item.price}</td>
+                    <td>${item.stock}</td>
+                    <td>${item.description}</td>
+                    <td>${timenow(item.created_at)}</td>
+                    <td>${timenow(item.updated_at)}</td>
+                    <td>
+                        <button data-id="${item.id}">修改</button>
+                        <button data-id="${item.id}" class="dele">删除</button>
+                    </td>
+                </tr>`
+            });
+            $("tbody").html(html)
+        };
+    }
+    function timenow(time) {
+        let date = new Date(time)
+        let year = date.getFullYear()
+        let month = date.getMonth() + 1
+        let day = date.getDate()
+        let hour = date.getHours()
+        let minute = date.getMinutes()
+        let second = date.getSeconds()
+        return `${year}-${month}-${day} ${hour}:${minute}:${second}`
+    }
+</script>
+
+</html>
